@@ -4,10 +4,7 @@ import com.ahmetyeniceri.project_udemy.entities.User;
 import com.ahmetyeniceri.project_udemy.services.serviceImpl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,5 +16,10 @@ public class UserController {
     @PostMapping("/save")
     public ResponseEntity<?> addUser(@RequestBody User user) {
         return userService.addUser(user);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
     }
 }

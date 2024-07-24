@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 import static com.ahmetyeniceri.project_udemy.enums.PEnum.*;
 
@@ -45,5 +46,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<?> deleteUser(Long id) {
         return null;
+    }
+
+    @Override
+    public ResponseEntity<?> updateUser(User user) {
+        HashMap<PEnum, Object> hashMap = new HashMap<>();
+        Optional<User> optionalUser = userRepository.findById(user.getId());
+
+        if (optionalUser.isPresent()){
+            userRepository.saveAndFlush(user);
+            hashMap.put(status, true);
+            hashMap.put(messages, "Updated user");
+            hashMap.put(username,user.getUserName());
+            return new ResponseEntity<>(hashMap,HttpStatus.OK);
+        }
+        hashMap.put(status, false);
+        hashMap.put(error,"User is null");
+        hashMap.put(username,user.getUserName());
+        return new ResponseEntity<>(hashMap,HttpStatus.NOT_FOUND);
     }
 }
