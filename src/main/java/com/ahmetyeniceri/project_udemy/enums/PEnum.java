@@ -1,5 +1,5 @@
 package com.ahmetyeniceri.project_udemy.enums;
 
 public enum PEnum {
-    messages,status,username,error
+    messages,status,username,error,result
 }

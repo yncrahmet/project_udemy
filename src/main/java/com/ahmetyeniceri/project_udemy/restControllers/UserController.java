@@ -22,4 +22,9 @@ public class UserController {
     public ResponseEntity<?> updateUser(@RequestBody User user) {
         return userService.updateUser(user);
     }
+
+    @GetMapping("/find")
+    public ResponseEntity<?> findUser(@RequestParam Long id){
+        return userService.findUser(id);
+    }
 }

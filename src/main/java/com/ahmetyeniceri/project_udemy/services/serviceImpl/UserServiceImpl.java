@@ -40,7 +40,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<?> findUser(Long id) {
-        return null;
+        HashMap<PEnum, Object> hashMap = new HashMap<>();
+        User user = userRepository.findById(id).orElse(null);
+        if (user != null){
+            hashMap.put(status,true);
+            hashMap.put(result,user);
+            return new ResponseEntity<>(hashMap,HttpStatus.OK);
+        }
+        hashMap.put(status,false);
+        hashMap.put(error,"Not found user with "+id);
+
+        return new ResponseEntity<>(hashMap,HttpStatus.NOT_FOUND);
     }
 
     @Override
