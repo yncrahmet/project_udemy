@@ -7,9 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
-
 
 @RequiredArgsConstructor
 @RestController
@@ -38,7 +36,7 @@ public class PostController {
     }
 
     @GetMapping("/all")
-    public List<Post> findPostAll() {
+    public ResponseEntity<Map<PEnum, Object>> findPostAll() {
         return postService.findPostAll();
     }
 

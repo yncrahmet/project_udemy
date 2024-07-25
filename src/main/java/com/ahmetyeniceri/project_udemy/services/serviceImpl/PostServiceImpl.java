@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -35,7 +34,7 @@ public class PostServiceImpl implements PostService {
 
             return new ResponseEntity<>(hashMap, HttpStatus.CREATED);
 
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             hashMap.put(status, false);
             hashMap.put(error, "Post is not add!");
             hashMap.put(result, post);
@@ -49,7 +48,7 @@ public class PostServiceImpl implements PostService {
         HashMap<PEnum, Object> hashMap = new HashMap<>();
         boolean hasPost = postRepository.existsById(id);
 
-        if (hasPost){
+        if (hasPost) {
 
             postRepository.deleteById(id);
 
@@ -91,7 +90,7 @@ public class PostServiceImpl implements PostService {
         HashMap<PEnum, Object> hashMap = new HashMap<>();
         Post post = postRepository.findById(id).orElse(null);
 
-        if (post != null){
+        if (post != null) {
             hashMap.put(status, true);
             hashMap.put(result, post);
 
@@ -105,7 +104,21 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> findPostAll() {
-        return postRepository.findAll();
+    public ResponseEntity<Map<PEnum, Object>> findPostAll() {
+        HashMap<PEnum, Object> hashMap = new HashMap<>();
+
+        try {
+            hashMap.put(status, true);
+            hashMap.put(messages, "List of the posts");
+            hashMap.put(result, postRepository.findAll());
+
+            return new ResponseEntity<>(hashMap, HttpStatus.OK);
+
+        } catch (Exception ex) {
+            hashMap.put(status, false);
+            hashMap.put(error, "Error!");
+
+            return new ResponseEntity<>(hashMap, HttpStatus.NOT_FOUND);
+        }
     }
 }
