@@ -31,10 +31,13 @@ public class UserServiceImpl implements UserService {
             hashMap.put(username,user.getUserName());
             return new ResponseEntity<>(hashMap, HttpStatus.BAD_REQUEST);
         }
+
         userRepository.save(user);
+
         hashMap.put(status,true);
         hashMap.put(messages,"User created");
         hashMap.put(username,user.getUserName());
+
         return new ResponseEntity<>(hashMap,HttpStatus.CREATED);
     }
 
@@ -42,11 +45,13 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<?> findUser(Long id) {
         HashMap<PEnum, Object> hashMap = new HashMap<>();
         User user = userRepository.findById(id).orElse(null);
+
         if (user != null){
             hashMap.put(status,true);
             hashMap.put(result,user);
             return new ResponseEntity<>(hashMap,HttpStatus.OK);
         }
+
         hashMap.put(status,false);
         hashMap.put(error,"Not found user with "+id);
 
@@ -83,9 +88,12 @@ public class UserServiceImpl implements UserService {
             hashMap.put(username,user.getUserName());
             return new ResponseEntity<>(hashMap,HttpStatus.OK);
         }
+
         hashMap.put(status, false);
         hashMap.put(error,"User is null");
         hashMap.put(username,user.getUserName());
+
         return new ResponseEntity<>(hashMap,HttpStatus.NOT_FOUND);
     }
+
 }

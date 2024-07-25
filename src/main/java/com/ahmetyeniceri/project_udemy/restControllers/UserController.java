@@ -32,4 +32,5 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@RequestParam Long id){
         return userService.deleteUser(id);
     }
+
 }
