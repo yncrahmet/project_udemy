@@ -1,12 +1,14 @@
 package com.ahmetyeniceri.project_udemy.restControllers;
 
 import com.ahmetyeniceri.project_udemy.entities.Post;
+import com.ahmetyeniceri.project_udemy.enums.PEnum;
 import com.ahmetyeniceri.project_udemy.services.serviceImpl.PostServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -16,22 +18,22 @@ public class PostController {
     private final PostServiceImpl postService;
 
     @PostMapping("/save")
-    public ResponseEntity<?> addPost(@RequestBody Post post) {
+    public ResponseEntity<Map<PEnum, Object>> addPost(@RequestBody Post post) {
         return postService.addPost(post);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deletePost(@RequestParam Long id) {
+    public ResponseEntity<Map<PEnum, Object>> deletePost(@RequestParam Long id) {
         return postService.deletePost(id);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updatePost(@RequestBody Post post) {
+    public ResponseEntity<Map<PEnum, Object>> updatePost(@RequestBody Post post) {
         return postService.updatePost(post);
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<?> findPostById(@PathVariable Long id) {
+    public ResponseEntity<Map<PEnum, Object>> findPostById(@PathVariable Long id) {
         return postService.findPostById(id);
     }
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.ahmetyeniceri.project_udemy.enums.PEnum.*;
@@ -22,33 +23,33 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public ResponseEntity<?> addPost(Post post) {
+    public ResponseEntity<Map<PEnum, Object>> addPost(Post post) {
         HashMap<PEnum, Object> hashMap = new HashMap<>();
-        boolean hasTitle = postRepository.existsByTitle(post.getTitle());
 
-        if (hasTitle){
+        try {
+            postRepository.save(post);
+
+            hashMap.put(status, true);
+            hashMap.put(messages, "Post successfully added!");
+            hashMap.put(result, post);
+
+            return new ResponseEntity<>(hashMap, HttpStatus.CREATED);
+
+        }catch (Exception ex) {
             hashMap.put(status, false);
-            hashMap.put(error, "Post title already exists");
-            hashMap.put(title, post.getTitle());
+            hashMap.put(error, "Post is not add!");
+            hashMap.put(result, post);
 
             return new ResponseEntity<>(hashMap, HttpStatus.BAD_REQUEST);
         }
-
-        postRepository.save(post);
-
-        hashMap.put(status, true);
-        hashMap.put(result, "Post successfully added");
-        hashMap.put(title, post.getTitle());
-
-        return new ResponseEntity<>(hashMap, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<?> deletePost(Long id) {
+    public ResponseEntity<Map<PEnum, Object>> deletePost(Long id) {
         HashMap<PEnum, Object> hashMap = new HashMap<>();
-        boolean hasTitle = postRepository.existsById(id);
+        boolean hasPost = postRepository.existsById(id);
 
-        if (hasTitle){
+        if (hasPost){
 
             postRepository.deleteById(id);
 
@@ -65,7 +66,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ResponseEntity<?> updatePost(Post post) {
+    public ResponseEntity<Map<PEnum, Object>> updatePost(Post post) {
         HashMap<PEnum, Object> hashMap = new HashMap<>();
         Optional<Post> optionalPost = postRepository.findById(post.getId());
 
@@ -73,20 +74,20 @@ public class PostServiceImpl implements PostService {
             postRepository.saveAndFlush(post);
 
             hashMap.put(status, true);
-            hashMap.put(result, "Post successfully updated");
-            hashMap.put(title, post.getTitle());
+            hashMap.put(messages, "Post is successfully updated");
+            hashMap.put(result, post);
 
             return new ResponseEntity<>(hashMap, HttpStatus.OK);
         }
 
         hashMap.put(status, false);
-        hashMap.put(error, "Post not found with id " + post.getId());
+        hashMap.put(error, "Post is not found with id " + post.getId());
 
-        return new ResponseEntity<>(hashMap, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(hashMap, HttpStatus.BAD_REQUEST);
     }
 
     @Override
-    public ResponseEntity<?> findPostById(Long id) {
+    public ResponseEntity<Map<PEnum, Object>> findPostById(Long id) {
         HashMap<PEnum, Object> hashMap = new HashMap<>();
         Post post = postRepository.findById(id).orElse(null);
 
