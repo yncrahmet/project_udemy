@@ -44,7 +44,23 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ResponseEntity<?> deletePost(Long id) {
-        return null;
+        HashMap<PEnum, Object> hashMap = new HashMap<>();
+        boolean hasPost = postRepository.existsById(id);
+
+        if (hasPost){
+
+            postRepository.deleteById(id);
+
+            hashMap.put(status, true);
+            hashMap.put(result, "Post successfully deleted");
+
+            return new ResponseEntity<>(hashMap, HttpStatus.OK);
+        }
+
+        hashMap.put(status, false);
+        hashMap.put(error, "Post not found with id " + id);
+
+        return new ResponseEntity<>(hashMap, HttpStatus.NOT_FOUND);
     }
 
     @Override
