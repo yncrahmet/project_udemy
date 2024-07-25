@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import static com.ahmetyeniceri.project_udemy.enums.PEnum.*;
@@ -100,5 +101,10 @@ public class PostServiceImpl implements PostService {
         hashMap.put(error, "Post not found with id " + id);
 
         return new ResponseEntity<>(hashMap, HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public List<Post> findPostAll() {
+        return postRepository.findAll();
     }
 }
