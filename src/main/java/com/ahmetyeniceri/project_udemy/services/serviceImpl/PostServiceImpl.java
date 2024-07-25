@@ -6,11 +6,11 @@ import com.ahmetyeniceri.project_udemy.repositories.PostRepository;
 import com.ahmetyeniceri.project_udemy.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 import static com.ahmetyeniceri.project_udemy.enums.PEnum.*;
 
@@ -45,9 +45,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public ResponseEntity<?> deletePost(Long id) {
         HashMap<PEnum, Object> hashMap = new HashMap<>();
-        boolean hasPost = postRepository.existsById(id);
+        boolean hasTitle = postRepository.existsById(id);
 
-        if (hasPost){
+        if (hasTitle){
 
             postRepository.deleteById(id);
 
@@ -65,7 +65,23 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ResponseEntity<?> updatePost(Post post) {
-        return null;
+        HashMap<PEnum, Object> hashMap = new HashMap<>();
+        Optional<Post> optionalPost = postRepository.findById(post.getId());
+
+        if (optionalPost.isPresent()) {
+            postRepository.saveAndFlush(post);
+
+            hashMap.put(status, true);
+            hashMap.put(result, "Post successfully updated");
+            hashMap.put(title, post.getTitle());
+
+            return new ResponseEntity<>(hashMap, HttpStatus.OK);
+        }
+
+        hashMap.put(status, false);
+        hashMap.put(error, "Post not found with id " + post.getId());
+
+        return new ResponseEntity<>(hashMap, HttpStatus.NOT_FOUND);
     }
 
     @Override
