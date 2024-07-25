@@ -86,6 +86,19 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ResponseEntity<?> findPostById(Long id) {
-        return null;
+        HashMap<PEnum, Object> hashMap = new HashMap<>();
+        Post post = postRepository.findById(id).orElse(null);
+
+        if (post != null){
+            hashMap.put(status, true);
+            hashMap.put(result, post);
+
+            return new ResponseEntity<>(hashMap, HttpStatus.OK);
+        }
+
+        hashMap.put(status, false);
+        hashMap.put(error, "Post not found with id " + id);
+
+        return new ResponseEntity<>(hashMap, HttpStatus.NOT_FOUND);
     }
 }
