@@ -55,7 +55,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<?> deleteUser(Long id) {
-        return null;
+        HashMap<PEnum, Object> hashMap = new HashMap<>();
+        boolean hasUser = userRepository.existsById(id);
+
+        if (hasUser) {
+            userRepository.deleteById(id);
+            hashMap.put(status, true);
+            hashMap.put(result,"User is deleted!");
+
+            return new ResponseEntity<>(hashMap, HttpStatus.OK);
+        }
+        hashMap.put(status, false);
+        hashMap.put(error, "Not found user with "+id);
+
+        return new ResponseEntity<>(hashMap, HttpStatus.NOT_FOUND);
     }
 
     @Override
