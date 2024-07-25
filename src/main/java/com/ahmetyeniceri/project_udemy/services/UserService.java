@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 
 public interface UserService {
 
-    public ResponseEntity<?> addUser(User user);
-    public ResponseEntity<?> findUser(Long id);
-    public ResponseEntity<?> deleteUser(Long id);
-    public ResponseEntity<?> updateUser(User user);
+    ResponseEntity<?> addUser(User user);
+    ResponseEntity<?> findUser(Long id);
+    ResponseEntity<?> deleteUser(Long id);
+    ResponseEntity<?> updateUser(User user);
 }
