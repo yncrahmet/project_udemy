@@ -5,6 +5,7 @@ import com.ahmetyeniceri.project_udemy.enums.PEnum;
 import com.ahmetyeniceri.project_udemy.repositories.UserRepository;
 import com.ahmetyeniceri.project_udemy.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserService {
             hashMap.put(username,user.getUserName());
             return new ResponseEntity<>(hashMap, HttpStatus.BAD_REQUEST);
         }
-
+        user.setPassword(Base64.encodeBase64URLSafeString(user.getPassword().getBytes()));
         userRepository.save(user);
 
         hashMap.put(status,true);
