@@ -3,9 +3,10 @@ package com.ahmetyeniceri.project_udemy.services.serviceImpl;
 import com.ahmetyeniceri.project_udemy.entities.User;
 import com.ahmetyeniceri.project_udemy.enums.PEnum;
 import com.ahmetyeniceri.project_udemy.repositories.UserRepository;
+import com.ahmetyeniceri.project_udemy.security.Security;
 import com.ahmetyeniceri.project_udemy.services.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.codec.binary.Base64;
+//import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import static com.ahmetyeniceri.project_udemy.enums.PEnum.*;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final Security security;
 
     @Override
     public ResponseEntity<?> addUser(User user) {
@@ -32,7 +34,8 @@ public class UserServiceImpl implements UserService {
             hashMap.put(username,user.getUserName());
             return new ResponseEntity<>(hashMap, HttpStatus.BAD_REQUEST);
         }
-        user.setPassword(Base64.encodeBase64URLSafeString(user.getPassword().getBytes()));
+        // user.setPassword(Base64.encodeBase64URLSafeString(user.getPassword().getBytes()));
+        user.setPassword(security.getMd5(user.getPassword()));
         userRepository.save(user);
 
         hashMap.put(status,true);
